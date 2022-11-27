@@ -12,9 +12,9 @@ contract CounterTest is Test {
         vulnContract = new ReentrancyVuln();
         exploiter = new ExploitReentrancy();
 
-        vm.deal(address(0x7), 1 ether);
+        vm.deal(address(0x7), 5 ether);
         vm.prank(address(0x7));
-        vulnContract.giveEth{value: 1 ether}();
+        vulnContract.giveEth{value: 5 ether}();
 
         vm.deal(address(exploiter), 1 ether);
         vm.prank(address(exploiter));
@@ -23,8 +23,6 @@ contract CounterTest is Test {
     }
 
     function testExploit() public {
-        console.log("Address of exploiter", address(exploiter));
         exploiter.withdrawEthFromVulnContract(address(vulnContract));
-        console.log(address(exploiter).balance);
     }
 }

