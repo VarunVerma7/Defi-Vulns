@@ -8,7 +8,7 @@ contract CounterTest is Test {
     ReentrancyVuln public vulnContract;
     ExploitReentrancy public exploiter;
 
-    function setUp() public {        
+    function setUp() public {
         vulnContract = new ReentrancyVuln();
         exploiter = new ExploitReentrancy();
 
@@ -18,8 +18,7 @@ contract CounterTest is Test {
 
         vm.deal(address(exploiter), 1 ether);
         vm.prank(address(exploiter));
-        vulnContract.giveEth{value: 1 ether}();        
-
+        vulnContract.giveEth{value: 1 ether}();
     }
 
     function testExploit() public {
