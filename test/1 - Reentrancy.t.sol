@@ -16,13 +16,15 @@ contract CounterTest is Test {
         vm.prank(address(0x7));
         vulnContract.giveEth{value: 1 ether}();
 
-        vm.deal(address(0x8), 1 ether);
-        vm.prank(address(0x8));
+        vm.deal(address(exploiter), 1 ether);
+        vm.prank(address(exploiter));
         vulnContract.giveEth{value: 1 ether}();        
 
     }
 
     function testExploit() public {
-        
+        console.log("Address of exploiter", address(exploiter));
+        exploiter.withdrawEthFromVulnContract(address(vulnContract));
+        console.log(address(exploiter).balance);
     }
 }
